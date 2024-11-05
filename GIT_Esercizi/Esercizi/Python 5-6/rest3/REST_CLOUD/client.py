@@ -16,18 +16,18 @@ def GetCittadino():
     return input("Inserisci il codice fiscale della persona richiesta ")
 
 def UpdateCittadino():
-    dati_da_modifcare = [None for _ in range(4)]
-    dati_da_modifcare[0] = input("Inserisci il codice fiscale della persona a cui vuoi modificarei i dati")
+    dati_da_modificare = [None for _ in range(4)]
+    dati_da_modificare[0] = input("Inserisci il codice fiscale della persona a cui vuoi modificarei i dati")
     nome = input("Inserisci il nome modificato (Lascia vuoto per non cambiare) ")
     cognome = input("Inserisci il cognome modificato (Lascia vuoto per non cambiare) ")
     dataN = input("Inserisci la data di nascita modificata (Lascia vuoto per non cambiare) ")
     if cognome:
-        dati_da_modifcare[1] = cognome
+        dati_da_modificare[1] = cognome
     if dataN:
-        dati_da_modifcare[2] = dataN
+        dati_da_modificare[2] = dataN
     if nome:
-        dati_da_modifcare[3] = nome
-    return dati_da_modifcare
+        dati_da_modificare[3] = nome
+    return dati_da_modificare
 
 def DeleteCittadino():
     return input("Inserisci il codice fiscale della persona da eliminare ")
@@ -37,6 +37,7 @@ def Login():
     password = input("Inserisci la password ")
     return {username: [password]}
 
+stato = -1
 while True:
     if not auth:
         print("Operazioni disponibili:")
@@ -50,8 +51,10 @@ while True:
             try:
                 response = requests.post(api_url,json=accesso, verify=False)
                 print(response.content)
-                if str(response.content) == "b'True'":
+                jResponse = response.json()
+                if jResponse['Esito'] == "ok":
                     auth = True
+                    stato = jResponse['Stato']
                 print(auth)
             except:
                 print("Problemi di comunicazione con il server, riprova più tardi")
@@ -74,7 +77,7 @@ while True:
             print("1. Inserisci cittadino (es. atto di nascita)")
             print("2. Richiedi cittadino (es. cert. residenza)")
             print("3. Modifica cittadino (es. cambio residenza)")
-            print("4. Elimina cittadino (es. trasferim altro comune)")
+            print("4. Elimina cittadino (es. trasferimento altro comune)")
             print("5. Logout")
             print("6. Esci")
             sOper = input("Cosa vuoi fare? ")

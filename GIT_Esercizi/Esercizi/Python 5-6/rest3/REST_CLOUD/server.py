@@ -140,13 +140,24 @@ def login():
     content_type = request.headers.get('Content-Type')
     print("Ricevuta chiamata " + content_type)
     if (content_type == 'application/json'):
-        with open('login.json') as json_file:
-            user = json.load(json_file)
         for key, value in request.json.items():
-            if key in user:
-                if user[key][0] == value[0]:
-                    return "True"
-        return "Nome utente o password non trovati"
+            sQuery = f"select * from utenti where username = '{key}' and password = '{value[0]}'; "
+            print(sQuery)
+            INumRecord = db.read_in_db(mydb, sQuery)
+            if INumRecord == 1:            
+                print("Login Terminato Correttamente")
+                lRecord = db.read_next_row(mydb)
+                iStato = lRecord[1][0]
+                return '{"Esito": "ok", "Stato": '+ str(iStato) + '}'
+            elif INumRecord == 0:
+                print("Credenziali Errate")
+                return '{"Esito": "ko", "Stato": -1}'
+            elif INumRecord <= -1:
+                print("Dati Errati")
+                return '{"Esito": "ko", "Stato": -1}'
+            else:
+                print("Attenzione: Attacco in Corso")
+                return '{"Esito": "ko", "Stato": {iStato}}'
     else:
         return 'Content-Type not supported!'
 
@@ -159,7 +170,7 @@ def Registrazione():
         #Dobbiamo verificare se username è già presente nella tabella utenti 
         #altrimenti facciamo la insert
         for key, value in request.json.items():
-            sQuery = f"insert into utenti(username,password,privilegi) values ('{key}', {value[0]}, {random.randint(0,1)})"
+            sQuery = f"insert into utenti(username,password,privilegi) values ('{key}', '{value[0]}', {random.randint(0,1)});"
             print(sQuery)
             iRetValue = db.write_in_db(mydb, sQuery)
             if iRetValue == -2:
