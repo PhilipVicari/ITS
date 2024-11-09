@@ -28,8 +28,6 @@ join compagnia c on c.nome = v.comp
 join Aeroporto a ON a.codice = ap.arrivo OR a.codice = ap.partenza
 group by a.codice;
 -- 6. Quante sono le nazioni (diverse) raggiungibili da ogni nazione tramite uno o più voli?
-select la.nazione
-from LuogoAeroporto la
 
 -- 7. Qual è la durata media dei voli che partono da ognuno degli aeroporti?
 

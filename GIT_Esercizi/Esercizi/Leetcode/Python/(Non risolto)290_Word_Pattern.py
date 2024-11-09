@@ -4,7 +4,7 @@ class Solution:
         W_P={}
         for i in range(1, len(Parole)):
             if pattern[i] not in W_P:
-                # values() is a set - fast membership testing - O(1) amortised search
+                # values() is a set - fast membership testing - O(1) amortized search
                 if Parole[i] not in W_P.values(): 
                     W_P[pattern[i]] = Parole[i]
                 else:
