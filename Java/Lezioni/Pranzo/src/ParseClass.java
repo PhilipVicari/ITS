@@ -27,7 +27,7 @@ class ParseClass {
             double calorie = calorieCibo[random.nextInt(calorieCibo.length)];
             double prezzo = prezzoCibo[random.nextInt(prezzoCibo.length)];
             String tipo = tipiCibo[random.nextInt(tipiCibo.length)];
-            return new Cibo(nome, calorie, prezzo, tipo);
+            return new Cibo(nome, tipo, prezzo, calorie);
         }
         return null;
     }
