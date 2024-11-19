@@ -1,78 +1,47 @@
-from flask import Flask, json, request
-from myjson import JsonSerialize,JsonDeserialize
+from flask import Flask, json, request, render_template, jsonify
+import random
+import os
+import sys
+import dbclientPhi as db
 
-sAnagrafe = "./anagrafe.json"
 api = Flask(__name__)
-
-#mettere una lista di liste dove ogni lista è un cittadino
-
-#la chiave è il codice fiscale
-#add cittadino
-#read cittadino
-#update cittadino
-#delete cittadino
-
 
 @api.route('/add_cittadino', methods=['POST'])
 def GestisciAddCittadino():
-    content_type = request.headers.get('Content-Type')
-    print("Ricevuta chiamata " + content_type)
-    if (content_type == 'application/json'):
-        jsonReq = request.json
-        sCodiceFiscale = jsonReq["codice fiscale"]
-        anagrafe = JsonDeserialize(sAnagrafe)
-        if sCodiceFiscale not in anagrafe:
-            dNuovoCittadino = jsonReq
-            anagrafe[sCodiceFiscale] = dNuovoCittadino
-            JsonSerialize(anagrafe,sAnagrafe)
-            jsonResp = {"Esito":"000", "Msg":"ok"}
-            return json.dumps(jsonResp),200
+    mydb = db.connect()
+    if mydb is None:
+        print("AHAHAHAH")
+        sys.exit()
+    try:
+        response = request.json
+        nome = response.get("nome")
+        cognome = response.get("cognome")
+        dataNascita = response.get("data nascita")
+        codicefiscale = response.get("codice fiscale")
+        
+        query= db.write_in_db(mydb, f"insert into utenti(nomeutente, cognomeutente, datanascita, codicefiscale) values ('{nome}', '{cognome}', '{dataNascita}', '{codicefiscale}')")
+        
+        if query == 0:
+            print("Andato a buon fine")
+            return jsonify({"Esito": "200", "msg": "Andato a buon fine"}), 200
         else:
-            jsonResp = {"Esito":"001", "Msg":"Cittadino gia presente"}
-            return json.dumps(jsonResp),200
-    else:
-        return 'Content-Type not supported!',401
+            print("Errore")
+            return jsonify({"Esito": "404", "msg": "Non andato a buon fine"}), 404
+    except Exception as e:
+        print(str(e))
+        return jsonify({"Esito": "500", "msg": "Errore di Connessione al Server"}), 500
+
+
 
 @api.route('/richiedi_cittadino', methods= ['GET'])
 def GestisciRichiediCIttadino():
-    content_type = request.headers.get('Content-Type')
-    print("Ricevuta chiamata " + content_type)
-    if (content_type == 'application/json'):
-        jsonReq = request.json
-        sCodiceFiscale = jsonReq["codice fiscale"]
-        anagrafe = JsonDeserialize(sAnagrafe)
-        if sCodiceFiscale in anagrafe:
-            dati = anagrafe[sCodiceFiscale]
-            JsonSerialize(anagrafe, sAnagrafe)
-            jsonResp = {"Esito":"000", "Msg":"ok", 'dati:': dati }
-            return json.dumps(jsonResp),200
-        else:
-            jsonResp = {"Esito":"001", "Msg":"Cittadino gia presente"}
-            return json.dumps(jsonResp),200
-    else:
-        return 'Content-Type not supported!',401
-    
+    pass
 @api.route('/modifica_cittadino', methods= ['PUT'])
 def GestisciModificaCIttadino():
-    content_type = request.headers.get('Content-Type')
-    print("Ricevuta chiamata " + content_type)
-    if (content_type == 'application/json'):
-        jsonReq = request.json
-        sCodiceFiscale = jsonReq["codice fiscale"]
-        anagrafe = JsonDeserialize(sAnagrafe)
-        if sCodiceFiscale in anagrafe:
-            N_Cittadino= jsonReq
-            anagrafe[sCodiceFiscale] = N_Cittadino
-            JsonSerialize(anagrafe, sAnagrafe)
-            jsonResp = {"Esito":"000", "Msg":"ok", 'Cittadino:': N_Cittadino }
-            return json.dumps(jsonResp),200
-        else:
-            jsonResp = {"Esito":"001", "Msg":"Cittadino gia presente"}
-            return json.dumps(jsonResp),200
-    else:
-        return 'Content-Type not supported!',401
-
-
-api.run(host="127.0.0.1", port=8080)
+    pass
+@api.route('/elimina_cittadino', methods= ['DELETE'])
+def EliminaCittadino():
+    pass
+api.run(host="127.0.0.1", port=8080, ssl_context="adhoc", debug=True)
 
 

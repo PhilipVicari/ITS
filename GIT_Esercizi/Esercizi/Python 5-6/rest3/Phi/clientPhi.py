@@ -4,7 +4,7 @@ import sys
 
 base_url = "http://127.0.0.1:8080"
 
-def GetDatiCittadino():
+def AddDatiCittadino():
     nome = input("Qual'è il nome?")
     cognome = input("Qual'è il cognome")
     dataN = input("Qual'è la data di nascita?")
@@ -57,75 +57,35 @@ def ModificaCittadino():
 def EliminaCittadino():
     codF = input("Qual'è il codice fiscale?")
     datiCittadino={'codice fiscale': codF}
+    
 print("Operazioni disponibili:")
 print("1. Inserisci cittadino (es. atto di nascita)")
 print("2. Richiedi cittadino (es. cert. residenza)")
 print("3. Modifica cittadino (es. cambio residenza)")
 print("4. Elimina cittadino (es. trasferim altro comune)")
 print("5. Esci")
-sOper = input("Cosa vuoi fare?")
+comando = input("Cosa vuoi fare?")
 while(True):
-    if sOper == "1":
-        print("Inserimento nuovo cittadino")
-        api_url = base_url + "/add_cittadino"
-        jsonDataRequest = GetDatiCittadino()
+    if comando == "1":
+        print("Aggiungi Cittadino")
+        datiCittadino = AddDatiCittadino()
+        api_url = base_url + '/add_cittadino'
         try:
-            response = requests.post(api_url,json=jsonDataRequest)
-        
-            #print(response.json())
-            print(response.status_code)
-            print(response.headers["Content-Type"])
-            data1 = response.json()
-            print(data1)
+            request = requests.post(api_url, json=datiCittadino, verify = False)
+            if request.status_code == 200:
+                print("Andato a buon fine")
         except:
-            print("Problemi di comunicazione con il server, riprova più tardi")
-            
-    elif sOper == "2":
+            print("Errore di Connessione al Server")
+    elif comando == "2":
         print("Richiesta Cittadino")
-        api_url = base_url + "/richiedi_cittadino"
-        jsonDataRequest = RichiediCittadino()
-        try:
-            response = requests.get(api_url,json=jsonDataRequest)
-        
-            #print(response.json())
-            print(response.status_code)
-            print(response.headers["Content-Type"])
-            data2 = response.json()
-            print(data2)
-        except:
-            print("Problemi di comunicazione con il server, riprova più tardi")
     
-    elif sOper == "3":
+    elif comando == "3":
         print("Modifica Cittadino")
-        api_url = base_url + "/modifica_cittadino"
-        jsonDataRequest = ModificaCittadino()
-        try:
-            response = requests.get(api_url,json=jsonDataRequest)
         
-            #print(response.json())
-            print(response.status_code)
-            print(response.headers["Content-Type"])
-            data2 = response.json()
-            print(data2)
-        except:
-            print("Problemi di comunicazione con il server, riprova più tardi")
-            
-    elif sOper == "4":
+    elif comando == "4":
         print("Modifica Cittadino")
-        api_url = base_url + "/modifica_cittadino"
-        jsonDataRequest = ModificaCittadino()
-        try:
-            response = requests.get(api_url,json=jsonDataRequest)
         
-            #print(response.json())
-            print(response.status_code)
-            print(response.headers["Content-Type"])
-            data2 = response.json()
-            print(data2)
-        except:
-            print("Problemi di comunicazione con il server, riprova più tardi")      
-              
-    if sOper=="5":
+    if comando=="5":
         print("Buona giornata!")
         sys.exit()
     print("Operazioni disponibili:")
@@ -134,4 +94,4 @@ while(True):
     print("3. Modifica cittadino (es. cambio residenza)")
     print("4. Elimina cittadino (es. trasferim altro comune)")
     print("5. Esci")
-    sOper = input("Cosa vuoi fare?")    
+    comando = input("Cosa vuoi fare?")    

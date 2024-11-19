@@ -1,4 +1,5 @@
-import requests,json
+import requests
+import json
 import sys
 
 base_url = "https://127.0.0.1:8080"
@@ -17,7 +18,7 @@ def GetCittadino():
 
 def UpdateCittadino():
     dati_da_modificare = [None for _ in range(4)]
-    dati_da_modificare[0] = input("Inserisci il codice fiscale della persona a cui vuoi modificarei i dati")
+    dati_da_modificare[0] = input("Inserisci il codice fiscale della persona a cui vuoi modificare i dati")
     nome = input("Inserisci il nome modificato (Lascia vuoto per non cambiare) ")
     cognome = input("Inserisci il cognome modificato (Lascia vuoto per non cambiare) ")
     dataN = input("Inserisci la data di nascita modificata (Lascia vuoto per non cambiare) ")

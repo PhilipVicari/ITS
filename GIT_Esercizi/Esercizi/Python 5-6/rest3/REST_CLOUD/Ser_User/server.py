@@ -2,7 +2,7 @@ from flask import Flask, json, request, render_template
 import random
 import os
 import sys
-import dbclient as db
+import dbclientPhi as db
 
 api = Flask(__name__)
 mydb = db.connect()
@@ -11,33 +11,6 @@ if mydb is None:
     sys.exit()
 else:
     print("Connessione al db ok")
-    
-if not os.path.isfile('login.json'):
-    with open("login.json", "w") as json_file:
-        json.dump({}, json_file)
-        
-if not os.path.isfile('user.json'):
-    with open("user.json", "w") as json_file:
-        json.dump({}, json_file)
-        
-def login_interno(user: dict):
-    with open('login.json') as json_file:
-        users = json.load(json_file)
-    for key, value in user.items():
-        if key in users:
-            if users[key][0] == value[0]:
-                return True
-    return False
-
-def controllo_privilegi_admin(user: dict):
-    with open('login.json') as json_file:
-        users = json.load(json_file)    
-    for key, value in user.items():
-        if key in users:
-            if value[0] == users[key][0]:
-                if users[key][1] == 1:
-                    return True
-    return False
 
 @api.route('/add_cittadino', methods=['POST'])
 def GestisciAddCittadino():
