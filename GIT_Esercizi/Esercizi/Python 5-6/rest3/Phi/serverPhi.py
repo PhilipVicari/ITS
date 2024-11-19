@@ -35,7 +35,26 @@ def GestisciAddCittadino():
 
 @api.route('/richiedi_cittadino', methods= ['GET'])
 def GestisciRichiediCIttadino():
-    pass
+    mydb = db.connect()
+    if mydb is None:
+        print("AHAHAHAH")
+        sys.exit()
+    try:
+        response = request.json
+        codicefiscale = response.get("codice fiscale")
+        query= db.read_next_row(mydb, f"SELECT * FROM utenti where codicefiscale = {codicefiscale}")
+        
+        if query == -1:
+            print("Errore")
+            return jsonify({"Esito": "404", "msg": "Non andato a buon fine"}), 404
+        else:
+            print("Andato a buon fine")
+            return jsonify({"Esito": "200", "msg": "Andato a buon fine"}), 200
+
+    except Exception as e:
+        print(str(e))
+        return jsonify({"Esito": "500", "msg": "Errore di Connessione al Server"}), 500
+
 @api.route('/modifica_cittadino', methods= ['PUT'])
 def GestisciModificaCIttadino():
     pass

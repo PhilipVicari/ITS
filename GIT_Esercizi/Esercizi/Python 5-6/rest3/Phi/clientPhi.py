@@ -2,7 +2,7 @@ from flask import json
 import requests
 import sys
 
-base_url = "http://127.0.0.1:8080"
+base_url = "https://127.0.0.1:8080"
 
 def AddDatiCittadino():
     nome = input("Qual'è il nome?")
@@ -65,8 +65,11 @@ print("3. Modifica cittadino (es. cambio residenza)")
 print("4. Elimina cittadino (es. trasferim altro comune)")
 print("5. Esci")
 comando = input("Cosa vuoi fare?")
+
 while(True):
+    
     if comando == "1":
+    
         print("Aggiungi Cittadino")
         datiCittadino = AddDatiCittadino()
         api_url = base_url + '/add_cittadino'
@@ -76,18 +79,51 @@ while(True):
                 print("Andato a buon fine")
         except:
             print("Errore di Connessione al Server")
+    
+    
     elif comando == "2":
+    
         print("Richiesta Cittadino")
+        datiCittadino = RichiediCittadino()
+        api_url = base_url + '/richiedi_cittadino'
+        try:
+            request = requests.post(api_url, json=datiCittadino, verify = False)
+            if request.status_code == 200:
+                print("Andato a buon fine")
+        except:
+            print("Errore di Connessione al Server")
     
     elif comando == "3":
+    
         print("Modifica Cittadino")
-        
+        datiCittadino = AddDatiCittadino()
+        api_url = base_url + '/add_cittadino'
+        try:
+            request = requests.post(api_url, json=datiCittadino, verify = False)
+            if request.status_code == 200:
+                print("Andato a buon fine")
+        except:
+            print("Errore di Connessione al Server")
+    
+    
     elif comando == "4":
-        print("Modifica Cittadino")
-        
+    
+        print("Elimina Cittadino")
+        datiCittadino = AddDatiCittadino()
+        api_url = base_url + '/elimina_cittadino'
+        try:
+            request = requests.post(api_url, json=datiCittadino, verify = False)
+            if request.status_code == 200:
+                print("Andato a buon fine")
+        except:
+            print("Errore di Connessione al Server")
+    
+    
     if comando=="5":
+    
         print("Buona giornata!")
         sys.exit()
+    
     print("Operazioni disponibili:")
     print("1. Inserisci cittadino (es. atto di nascita)")
     print("2. Richiedi cittadino (es. cert. residenza)")
