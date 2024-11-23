@@ -10,7 +10,7 @@ api = Flask(__name__)
 def GestisciAddCittadino():
     mydb = db.connect()
     if mydb is None:
-        print("AHAHAHAH")
+        print("connessione fallita")
         sys.exit()
     try:
         response = request.json
@@ -37,7 +37,7 @@ def GestisciAddCittadino():
 def GestisciRichiediCIttadino():
     mydb = db.connect()
     if mydb is None:
-        print("AHAHAHAH")
+        print("connessione fallita")
         sys.exit()
     try:
         response = request.json
@@ -57,10 +57,53 @@ def GestisciRichiediCIttadino():
 
 @api.route('/modifica_cittadino', methods= ['PUT'])
 def GestisciModificaCIttadino():
-    pass
+    mydb = db.connect()
+    if mydb is None:
+        print("connessione fallita")
+        sys.exit()
+    try:
+        response = request.json
+        nome = response.get("nome")
+        cognome = response.get("cognome")
+        dataNascita = response.get("data nascita")
+        codicefiscale = response.get("codice fiscale")
+        
+        query= db.write_in_db(mydb, f"UPDATE utenti SET nome = '{nome}, cognome = '{cognome}, datanascita = '{dataNascita}, codicefiscale = '{codicefiscale}, ")
+        
+        if query == 0:
+            print("Andato a buon fine")
+            return jsonify({"Esito": "200", "msg": "Andato a buon fine"}), 200
+        elif query == -1:
+            print("Errore")
+            return jsonify({"Esito": "404", "msg": "Non andato a buon fine"}), 404
+
+    except Exception as e:
+        print(str(e))
+        return jsonify({"Esito": "500", "msg": "Errore di Connessione al Server"}), 500
+    
 @api.route('/elimina_cittadino', methods= ['DELETE'])
 def EliminaCittadino():
-    pass
+    mydb = db.connect()
+    if mydb is None:
+        print("connessione fallita")
+        sys.exit()
+    try:
+        response = request.json
+        codicefiscale = response.get("codice fiscale")
+        
+        query= db.write_in_db(mydb, f"DELETE FROM utenti where codicefiscale = '{codicefiscale}'")
+        
+        if query == 0:
+            print("Andato a buon fine")
+            return jsonify({"Esito": "200", "msg": "Andato a buon fine"}), 200
+        elif query == -1:
+            print("Errore")
+            return jsonify({"Esito": "404", "msg": "Non andato a buon fine"}), 404
+
+    except Exception as e:
+        print(str(e))
+        return jsonify({"Esito": "500", "msg": "Errore di Connessione al Server"}), 500
+    
 api.run(host="127.0.0.1", port=8080, ssl_context="adhoc", debug=True)
 
 

@@ -97,7 +97,7 @@ while(True):
     
         print("Modifica Cittadino")
         datiCittadino = AddDatiCittadino()
-        api_url = base_url + '/add_cittadino'
+        api_url = base_url + '/modifica_cittadino'
         try:
             request = requests.post(api_url, json=datiCittadino, verify = False)
             if request.status_code == 200:
