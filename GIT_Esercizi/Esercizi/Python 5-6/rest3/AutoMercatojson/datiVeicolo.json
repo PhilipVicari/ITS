@@ -1,0 +1,19 @@
+{
+    "veicoli": [
+      {
+        "Marca": "Toyota",
+        "Modello": "Corolla",
+        "Cilindrata": 1800,
+        "Tipo": "Automobile",
+        "Disponibilità": true
+      },
+      {
+        "Marca": "Yamaha",
+        "Modello": "MT-07",
+        "Cilindrata": 689,
+        "Tipo": "Moto",
+        "Disponibilità": false
+      }
+    ]
+  }
+  
