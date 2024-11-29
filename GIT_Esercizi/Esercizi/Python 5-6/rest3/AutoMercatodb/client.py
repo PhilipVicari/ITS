@@ -28,7 +28,7 @@ def ModificaVeicolo():
         datiVeicolo = {"Marca":marca_nuova}
         return datiVeicolo
     elif Msg == "Modello":
-        cognome = input("Qual'è il modello?: ")
+        modello = input("Qual'è il modello?: ")
         modello_nuovo = modello
         datiVeicolo = {"Modello": modello_nuovo}
         return datiVeicolo

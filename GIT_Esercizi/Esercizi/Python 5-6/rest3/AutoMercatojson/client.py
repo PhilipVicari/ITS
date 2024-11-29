@@ -28,12 +28,12 @@ def ModificaVeicolo():
         datiVeicolo = {"Marca":marca_nuova}
         return datiVeicolo
     elif Msg == "Modello":
-        cognome = input("Qual'è il modello?: ")
+        modello = input("Qual'è il modello?: ")
         modello_nuovo = modello
         datiVeicolo = {"Modello": modello_nuovo}
         return datiVeicolo
     elif Msg == "Cilindrata":
-        dataN = input("Qual'è la cilindrata?: ")
+        cilindrata = input("Qual'è la cilindrata?: ")
         cilindrata_nuovo = cilindrata
         datiVeicolo = {"Cilindrata":cilindrata_nuovo}
         return datiVeicolo
@@ -43,6 +43,7 @@ def ModificaVeicolo():
 def EliminaVeicolo():
     marca = input("Qual'è la marca?: ")
     datiVeicolo={'Marca': marca}
+    return datiVeicolo
 
 def Disponibilità():
     marca = input("Inserire la Marca: ")
@@ -66,7 +67,7 @@ while(True):
         api_url = base_url + '/crea_Veicolo'
         try:
             richiesta = requests.post(api_url, json=datiVeicolo, verify = False)
-            if request.status_code == 200:
+            if richiesta.status_code == 200:
                 print("Andato a buon fine")
         except:
             print("Errore di Connessione al Server")
@@ -79,7 +80,7 @@ while(True):
         api_url = base_url + '/richiedi_Veicolo'
         try:
             richiesta = requests.post(api_url, json=datiVeicolo, verify = False)
-            if request.status_code == 200:
+            if richiesta.status_code == 200:
                 print("Andato a buon fine")
         except:
             print("Errore di Connessione al Server")
@@ -91,7 +92,7 @@ while(True):
         api_url = base_url + '/elimina_Veicolo'
         try:
             richiesta = requests.post(api_url, json=datiVeicolo, verify = False)
-            if request.status_code == 200:
+            if richiesta.status_code == 200:
                 print("Andato a buon fine")
         except:
             print("Errore di Connessione al Server")
