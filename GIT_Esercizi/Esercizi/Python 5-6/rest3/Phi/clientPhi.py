@@ -57,7 +57,7 @@ def ModificaCittadino():
 def EliminaCittadino():
     codF = input("Qual'è il codice fiscale?")
     datiCittadino={'codice fiscale': codF}
-
+    
 print("Operazioni disponibili:")
 print("1. Inserisci cittadino (es. atto di nascita)")
 print("2. Richiedi cittadino (es. cert. residenza)")
