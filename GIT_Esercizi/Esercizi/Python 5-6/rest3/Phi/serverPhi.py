@@ -18,9 +18,7 @@ def GestisciAddCittadino():
         cognome = response.get("cognome")
         dataNascita = response.get("data nascita")
         codicefiscale = response.get("codice fiscale")
-        
         query= db.write_in_db(mydb, f"insert into utenti(nomeutente, cognomeutente, datanascita, codicefiscale) values ('{nome}', '{cognome}', '{dataNascita}', '{codicefiscale}')")
-        
         if query == 0:
             print("Andato a buon fine")
             return jsonify({"Esito": "200", "msg": "Andato a buon fine"}), 200

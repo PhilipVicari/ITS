@@ -18,45 +18,45 @@ def AddDatiCittadino():
     }
     
     """
-    datiCittadino = {"nome":nome, "cognome": cognome, "data nascita":dataN, "codice fiscale":codF}
+    datiCittadino = {"nomeutente":nome, "cognomeutente": cognome, "datanascita":dataN, "codicefiscale":codF}
     return datiCittadino
 
 
 def RichiediCittadino():
     codF= input("Inserisci il codice fiscale:")
-    datiCittadino={'codice fiscale': codF}
+    datiCittadino={'codicefiscale': codF}
     return datiCittadino
 
 def ModificaCittadino():
     codF = input("Qual'è il codice fiscale?")
-    datiCittadino={'codice fiscale': codF}
+    datiCittadino={'codicefiscale': codF}
     Msg= input("Quale elemento vuoi cambiare?")
     if Msg == "nome":
         nome = input("Qual'è il nome?")
         nome_nuovo = nome
-        datiCittadino = {"nome":nome_nuovo}
+        datiCittadino = {"nomeutente":nome_nuovo}
         return datiCittadino
     elif Msg == "cognome":
         cognome = input("Qual'è il cognome?")
         cognome_nuovo = cognome
-        datiCittadino = {"cognome": cognome_nuovo}
+        datiCittadino = {"cognomeutente": cognome_nuovo}
         return datiCittadino
     elif Msg == "data nascita":
         dataN = input("Qual'è la data di nascita?")
         dataN_nuovo = dataN
-        datiCittadino = {"data nascita":dataN_nuovo}
+        datiCittadino = {"datanascita":dataN_nuovo}
         return datiCittadino
     elif Msg == "Codice fiscale":
         codF = input("Qual'è il codice fiscale?")
         codF_Nuovo = codF
-        datiCittadino = {"codice fiscale":codF_Nuovo}
+        datiCittadino = {"codicefiscale":codF_Nuovo}
         return datiCittadino
     else:
         return "Errore nell'inserimento"
 
 def EliminaCittadino():
     codF = input("Qual'è il codice fiscale?")
-    datiCittadino={'codice fiscale': codF}
+    datiCittadino={'codicefiscale': codF}
     
 print("Operazioni disponibili:")
 print("1. Inserisci cittadino (es. atto di nascita)")
@@ -87,7 +87,7 @@ while(True):
         datiCittadino = RichiediCittadino()
         api_url = base_url + '/richiedi_cittadino'
         try:
-            request = requests.post(api_url, json=datiCittadino, verify = False)
+            request = requests.get(api_url, json=datiCittadino, verify = False)
             if request.status_code == 200:
                 print("Andato a buon fine")
         except:
@@ -99,7 +99,7 @@ while(True):
         datiCittadino = AddDatiCittadino()
         api_url = base_url + '/modifica_cittadino'
         try:
-            request = requests.post(api_url, json=datiCittadino, verify = False)
+            request = requests.put(api_url, json=datiCittadino, verify = False)
             if request.status_code == 200:
                 print("Andato a buon fine")
         except:
@@ -112,7 +112,7 @@ while(True):
         datiCittadino = AddDatiCittadino()
         api_url = base_url + '/elimina_cittadino'
         try:
-            request = requests.post(api_url, json=datiCittadino, verify = False)
+            request = requests.delete(api_url, json=datiCittadino, verify = False)
             if request.status_code == 200:
                 print("Andato a buon fine")
         except:

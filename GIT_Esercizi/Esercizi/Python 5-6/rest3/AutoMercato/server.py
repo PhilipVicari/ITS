@@ -17,19 +17,19 @@ def Gestisci_Crea_Veicolo():
         marca = response.get("marca")
         modello = response.get("modello")
         disponibilità = response.get("disponibilità")
-        query= db.write_in_db(mydb, f"insert into {tipo}(Marca, Modello, Disponibilità) values ('{marca}', '{modello}', {disponibilità})")
+        query= db.write_in_db(mydb, f"insert into {tipo}(marca, modello, disponibilità) values ('{marca}', '{modello}', {disponibilità})")
         
         if query == 0:
             print("Andato a buon fine")
             return jsonify({"Esito": "200", "msg": "Andato a buon fine"}), 200
         else:
             print("Errore")
+            db.close(mydb)
             return jsonify({"Esito": "404", "msg": "Non andato a buon fine"}), 404
-        db.close(mydb)
     except Exception as e:
         print(str(e))
+        db.close(mydb)
         return jsonify({"Esito": "500", "msg": "Errore di Connessione al Server"}), 500
-    db.close(mydb)
     
 @api.route('/richiedi_Veicolo', methods= ['POST'])
 def Gestisci_Richiedi_Veicolo():
@@ -41,23 +41,22 @@ def Gestisci_Richiedi_Veicolo():
         tipo = response.get("tipo")
         marca = response.get("marca")
         modello = response.get("modello")
-        disponibilità = response.get("disponibilità")
-        query= db.write_in_db(mydb, f"SELECT * from {tipo} where marca = '{marca}' and modello = '{modello}'")
+        query= db.read_in_db(mydb, f"SELECT * from {tipo} where marca = '{marca}' and modello = '{modello}'")
         
-        if query == 0:
-            print("Andato a buon fine")
-            return jsonify({"Esito": "200", "msg": "Andato a buon fine"}), 200
-        else:
+        if query == -1:
             print("Errore")
             return jsonify({"Esito": "404", "msg": "Non andato a buon fine"}), 404
-        db.close(mydb)
+        else:
+            print("Andato a buon fine")
+            db.close(mydb)
+            return jsonify({"Esito": "200", "msg": "Andato a buon fine"}), 200
     except Exception as e:
         print(str(e))
+        db.close(mydb)
         return jsonify({"Esito": "500", "msg": "Errore di Connessione al Server"}), 500
-    db.close(mydb)
     
 
-@api.route('/modifica_Veicolo', methods= ['POST'])
+@api.route('/modifica_Veicolo', methods= ['GET'])
 def Gestisci_Modifica_Veicolo():
     mydb = db.connect()
     if mydb is None:
@@ -68,19 +67,20 @@ def Gestisci_Modifica_Veicolo():
         marca = response.get("marca")
         modello = response.get("modello")
         disponibilità = response.get("disponibilità")
-        query= db.write_in_db(mydb, f"insert into {tipo}(Marca, Modello, Disponibilità) values ('{marca}', '{modello}', {disponibilità})")
-        
+        query= db.write_in_db(mydb, f"UPDATE {tipo} SET marca = '{marca}', modello = '{modello}', disponibilità = '{disponibilità}'")
         if query == 0:
             print("Andato a buon fine")
+            db.close(mydb)
             return jsonify({"Esito": "200", "msg": "Andato a buon fine"}), 200
-        else:
+        elif query == -1:
             print("Errore")
+            db.close(mydb)
             return jsonify({"Esito": "404", "msg": "Non andato a buon fine"}), 404
-        db.close(mydb)
+
     except Exception as e:
         print(str(e))
+        db.close(mydb)
         return jsonify({"Esito": "500", "msg": "Errore di Connessione al Server"}), 500
-    db.close(mydb)
     
 
 @api.route('/elimina_Veicolo', methods= ['DELETE'])

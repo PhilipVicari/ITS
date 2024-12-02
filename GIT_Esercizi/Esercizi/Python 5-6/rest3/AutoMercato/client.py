@@ -6,7 +6,6 @@ base_url = "https://127.0.0.1:8080"
 
 def CreaVeicolo():
     tipo= input("Inserire il tipo di veicolo (automobili o motociclette): ")
-    
     marca = input("Inserire la marca: ")
     modello = input("Inserire la modello: ")
     disponibilità = True
@@ -21,25 +20,29 @@ def RichiediVeicolo():
     return datiVeicolo
 
 def ModificaVeicolo():
-    marca = input("Di quale marca si tratta?: ")
-    datiVeicolo={'Marca': marca}
-    Msg= input("Quale elemento vuoi cambiare?")
-    if Msg == "marca":
-        marca = input("Qual'è la marca?: ")
-        marca_nuova = marca
-        datiVeicolo = {"Marca":marca_nuova}
-        return datiVeicolo
-    elif Msg == "modello":
-        modello = input("Qual'è il modello?: ")
-        modello_nuovo = modello
-        datiVeicolo = {"Modello": modello_nuovo}
-        return datiVeicolo
-    elif Msg == "disponibilità":
-        disponibilità_nuovo = disponibilità
-        datiVeicolo = {"disponibilità": disponibilità_nuovo}
-        return datiVeicolo
+    tipo = input("Quale è il tipo?: ")
+    if tipo == "automobili" or "motociclette":
+        marca = input("Di quale marca si tratta?: ")
+        datiVeicolo = {"tipo": tipo, "marca": marca}
+        Msg= input("Quale elemento vuoi cambiare?")
+        if Msg == "modello":
+            modello = input("Qual'è il modello nuovo?: ")
+            modello_nuovo= modello
+            datiVeicolo = {"tipo": tipo, "modello": modello_nuovo}
+            return datiVeicolo
+        elif Msg == "disponibilità":
+            if datiVeicolo["disponibilità"] == True:
+                disponibilità = False
+                datiVeicolo = {"disponibilità": disponibilità}
+                return datiVeicolo
+            if datiVeicolo["disponibilità"] == False:
+                disponibilità = True
+                datiVeicolo = {"disponibilità": disponibilità}
+                return datiVeicolo
+        else:
+            return "Errore nell'inserimento"
     else:
-        return "Errore nell'inserimento"
+        return "Veicolo non riconosciuto"
 
 def EliminaVeicolo():
     tipo = input("Quale è il tipo?: ")
@@ -89,7 +92,7 @@ while(True):
         datiVeicolo = ModificaVeicolo()
         api_url = base_url + '/modifica_Veicolo'
         try:
-            richiesta = requests.post(api_url, json=datiVeicolo, verify = False)
+            richiesta = requests.get(api_url, json=datiVeicolo, verify = False)
             if richiesta.status_code == 200:
                 print("Andato a buon fine")
         except:
