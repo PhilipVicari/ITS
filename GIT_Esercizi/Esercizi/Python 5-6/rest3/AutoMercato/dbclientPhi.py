@@ -71,8 +71,9 @@ def read_in_db(cur,sql_select):
     try:
         cur.execute(sql_select)
         print("The number of parts: ", cur.rowcount)
+        row = cur.fetchone()
+        print(row)
         return cur.rowcount
-        #row = cur.fetchone()
 
         #while row is not None:
         #    print(row)
@@ -83,8 +84,9 @@ def read_in_db(cur,sql_select):
         conn = None
         return -1
 
-def read_next_row(cur):
+def read_next_row(cur, sql_select):
     try:
+        cur.execute(sql_select)
         row = cur.fetchone()
         return [0,row]
     except:
