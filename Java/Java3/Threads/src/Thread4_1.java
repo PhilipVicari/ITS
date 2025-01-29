@@ -1,7 +1,7 @@
 
 import static java.lang.Thread.sleep;
 
-public class Thread4 implements Runnable{
+public class Thread4_1 implements Runnable{
 
     @Override
     public void run() {
