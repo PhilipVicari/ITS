@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        /*Con il tag style ho abilitato la struttura css*/
+        .miostile{
+            color: green
+        }
+    </style>
+</head>
+<body>
+    
+    <h1 class="miostile" id="Cambio">
+        Prima pagina html
+    </h1>
+    
+    
+    <h2>
+        document
+    </h2>
+    
+    
+    <h3>
+        nell'oggetto document ci sono dei metodi... ne vediamo uno... GetElementById()
+    </h3>
+    <img id ="Miaimg" width="200px" src="https://www.appuntidistoria.net/wp-content/uploads/2024/07/parola-ciao.jpg">
+
+    <button onclick="test()">
+        CLICCA QUI
+    </button>
+    
+    <script>
+        var x = 10; //in js non esistono i tipi
+
+        //Il tag script può essere messo nell'head e nel body
+
+        //il tag script abilita la scrittura Javascript
+
+        //QUI POSSO USARE IL DOM
+
+        //document.element   Vai a prendere un elemento nel documento
+        
+        //funzione javascript
+        function test(){
+            document.title = "La mia prima pagina";
+            var miotag = document.getElementById("Miaimg");
+            
+            // attributo
+            miotag.setAttribute("width", "1000px")
+    
+            // evento
+            miotag.onclick = () => {alert("Ciao")};
+    
+            // style
+            miotag.style.border = "solid 5px red";
+        }
+
+    </script>
+</body>
+</html>
+
